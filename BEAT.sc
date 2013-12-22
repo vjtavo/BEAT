@@ -343,7 +343,7 @@ makeSteps = { var scrollViewView;
 															       horizontalDos.add(
 						 		NumberBox.new.minWidth_(10).maxWidth_								(15)
 						 		.value_(presets[currentPreset]										[nombre][\durs][indice])
-						 		.clipLo_(0).clipHi_(4)
+						 		.clipLo_(0.1).clipHi_(4)
 						 		.scroll_step_(0.1)
 						 		.action_({|numberBox|
 							 		presets[currentPreset][nombre]									[\durs][indice] = numberBox.value; 
