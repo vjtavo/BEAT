@@ -28,11 +28,12 @@ modify, menMod;
 var filePresets, presetToSave, instrumentsSel, menGen,
 saveButton, pathFile, selFile;
 var menFiles, updateFileUsed, menPres, arrayPresets,
-defPres, dataPreset, instMix, instBeat;
+defPres, dataPreset, instMix, instBeat, sO;
 
 
 instruments = List[ ]; 
 instrumentsSel = List[ ];
+sO = Platform.systemExtensionDir;
 
 
 //Synthdef
@@ -181,7 +182,7 @@ SynthDef("BEATPlayMono",
 
 // crea archivo default
 
-if(File.exists("/Library/Application Support/SuperCollider/Extensions/BEAT/Presets User/presetsFile.rtf"), {},{
+if(File.exists(sO.asString++"/BEAT/Presets User/presetsFile.rtf"), {},{
 											filePresets = ();
 											presetToSave = ();
 											instruments.collect({
@@ -192,13 +193,13 @@ if(File.exists("/Library/Application Support/SuperCollider/Extensions/BEAT/Prese
 											-> presetToSave);
 											filePresets.add(\Data -> 												()); 
 											filePresets[\Data].add											(\defaultData -> ()); 
-											filePresets[\Data]										[\defaultData].putPairs										([ \Dres, 1, \Dsteps, 4, 											\Dtempo, 120, \Dquant, 0]);											filePresets.writeArchive											("/Library/Application Support/SuperCollider/Extensions/BEAT/Presets User/presetsFile.rtf");
+											filePresets[\Data]										[\defaultData].putPairs										([ \Dres, 1, \Dsteps, 4, 											\Dtempo, 120, \Dquant, 0]);											filePresets.writeArchive											(sO.asString++"/BEAT/Presets User/presetsFile.rtf");
 											});
 
 
 // Crea valores iniciales
 // para crear el popup menu de archivos de presets
-presFold = PathName("/Library/Application Support/SuperCollider/Extensions/BEAT/Presets User");
+presFold = PathName(sO.asString++"/BEAT/Presets User");
 arrayFiles = List[ ];
 
 presFold.filesDo{|afile| 
@@ -209,7 +210,7 @@ arrayFiles.do({ arg item, ind; if(item==\presetsFile,												{defFile = ind;
 											{})
 											 });
 selFile = \presetsFile;
-pathFile = "/Library/Application Support/SuperCollider/Extensions/BEAT/Presets User/"++selFile.asString++".rtf";
+pathFile = sO.asString++"/BEAT/Presets User/"++selFile.asString++".rtf";
 presets=Object.readArchive(pathFile); 
 arrayPresets = presets.order;
 arrayPresets = arrayPresets.takeThese({ arg item; item.value == \Data; });
@@ -692,7 +693,7 @@ updatePdefs = {	pdefs.do{| pdef | pdef.clear};
 						
 updateFileUsed = { | item |
 					selFile = item;
-					pathFile ="/Library/Application Support/SuperCollider/Extensions/BEAT/Presets User/"++selFile.asString++".rtf";
+					pathFile =sO.asString++"/BEAT/Presets User/"++selFile.asString++".rtf";
 					presets=Object.readArchive(pathFile); 
 					arrayPresets = presets.order;
 					arrayPresets = arrayPresets.takeThese({ arg item; item.value == \Data; });
@@ -718,7 +719,7 @@ Button(guiInstBeat,  190@80)
 Ê Ê Ê Ê Ê Ê ["Synthdef", Color.black, Color.blue(0.7,0.8)]
             ])
             .action_({ |val| if(val.value==1,
-	            (Document.open("/Library/Application Support/SuperCollider/Extensions/BEAT/BEAT.sc",promptSynth,0);
+	            (Document.open(sO.asString++"/BEAT/BEAT.sc",promptSynth,0);
 	            );
 	            );
             });
